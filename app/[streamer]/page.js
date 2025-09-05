@@ -47,7 +47,7 @@ export default async function Botrix({ params, searchParams }) {
 
         <div className="flex w-full flex-col gap-2">
           <p className="text-text-secondary text-xs">
-            A {amount} donation is a great way to help {channel} keep doing what
+            Donating {amount} is a great way to help {channel} keep doing what
             they are doing {name}.
           </p>
         </div>
@@ -61,15 +61,14 @@ export default async function Botrix({ params, searchParams }) {
 
           {hhe.data.urls.map((url, index) => (
             <a
-              key={url.link || `${url.name}-${index}`} // ✅ key on the top-level element
+              key={url.link || `${url.name}-${index}`}
               href={url.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="col-span-2"
             >
               <Image
-                width={48}
-                height={48}
+                width={52}
+                height={52}
                 className="rounded-xl"
                 src={url.logo}
                 alt={url.name}
