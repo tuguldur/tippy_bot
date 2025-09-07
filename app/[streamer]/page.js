@@ -1,11 +1,11 @@
 import Image from "next/image";
 import axios from "axios";
 
-const tippy = async ({ amount = 5000, name, uid }) => {
+const tippy = async ({ amount, name, uid }) => {
   try {
     const { data } = await axios.post(
       "https://asia-east2-mnt-alert.cloudfunctions.net/user/quick_qpay",
-      { data: { amount, name, message: "", uid } }
+      { data: { amount: amount ? amount : 5000, name, message: "", uid } }
     );
     return data;
   } catch (error) {
