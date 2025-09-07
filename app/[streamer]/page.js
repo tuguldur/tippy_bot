@@ -25,6 +25,7 @@ export default async function Botrix({ params, searchParams }) {
   const { amount, name, channel } = await searchParams;
   const { streamer } = await params;
   const hhe = await tippy({ name, amount, uid: streamer });
+  console.log(hhe);
   if (!hhe) {
     return (
       <div className="h-full flex flex-col items-center justify-center gap-0.5">
@@ -37,7 +38,7 @@ export default async function Botrix({ params, searchParams }) {
       </div>
     );
   }
-  if (hhe.status === false) {
+  if (hhe.status === false || hhe.success === false) {
     return (
       <div className="h-full flex flex-col items-center justify-center gap-0.5">
         <h2 className="text-center text-3xl font-semibold">
