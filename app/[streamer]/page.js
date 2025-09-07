@@ -8,28 +8,38 @@ const tippy = async ({ amount, name, uid }) => {
       { data: { amount, name, message: "", uid } }
     );
     return data;
-  } catch {
+  } catch (error) {
+    console.log(error);
     return false;
   }
 };
 
 export default async function Botrix({ params, searchParams }) {
-  const amount = searchParams?.amount ?? "";
-  const name = searchParams?.name ?? "";
-  const channel = searchParams?.channel ?? "";
-  const { streamer } = params;
-
+  const { amount, name, channel } = await searchParams;
+  const { streamer } = await params;
   const hhe = await tippy({ name, amount, uid: streamer });
-  if (!hhe || !hhe.data) {
+  if (!hhe) {
     return (
-      <div className="flex h-full w-full items-center justify-center p-6">
-        <div className="text-sm text-red-400">
+      <div className="h-full flex flex-col items-center justify-center gap-0.5">
+        <h2 className="text-center text-3xl font-semibold">
+          Oops, something went wrong
+        </h2>
+        <p className="text-grey-300 text-center">
           Couldn’t generate a QR right now. Please try again.
-        </div>
+        </p>
       </div>
     );
   }
-
+  if (hhe.status === false) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center gap-0.5">
+        <h2 className="text-center text-3xl font-semibold">
+          Oops, something went wrong
+        </h2>
+        <p className="text-grey-300 text-center">{hhe.error}</p>
+      </div>
+    );
+  }
   return (
     <div className="flex h-full w-full flex-row items-center justify-center">
       <div className="bg-[#171c1e] flex h-full w-full flex-col gap-3 p-4 sm:h-fit sm:w-[408px] sm:rounded">
@@ -47,8 +57,13 @@ export default async function Botrix({ params, searchParams }) {
 
         <div className="flex w-full flex-col gap-2">
           <p className="text-text-secondary text-xs">
-            Donating {amount} is a great way to help {channel} keep doing what
-            they are doing {name}.
+            Donating{" "}
+            {new Intl.NumberFormat("mn-MN", {
+              style: "currency",
+              currency: "MNT",
+            }).format(amount)}{" "}
+            is a great way to help <b>{channel}</b> keep doing what they are
+            doing {name}
           </p>
         </div>
 
